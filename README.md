@@ -107,17 +107,21 @@ You can also set Bold, Inverse and Underline styles using these values in $Wansi
 2. Underline - `$Wansi.UnderlineOn` : `$Wansi.UnderlineOff`
 3. Inverse - `$Wansi.InverseOn` : `$Wansi.InverseOff`
 
-The group colors and styles that can be overridden are in the following variables:
+Here are the group colors, styles and defaults that can be overridden with the current defaults
 ```powershell
-$GDCSourceCodeColor
-$GDCDataFileColor
-$GDCCompressedFileColor
-$GDCExecutableFileColor
-$GDCDocumentFileColor
-$GDCHiddenFileColor
-$GDCHiddenFolderColor
-$GDCNakedFileColor
-$GDCDefaultFileColor
+$GDCSourceCodeColor = $Wansi.F82
+$GDCDataFileColor = $Wansi.F14
+$GDCLogFileColor = $Wansi.F9
+$GDCCompressedFileColor = $Wansi.F129
+$GDCExecutableFileColor = $Wansi.F2
+$GDCDocumentFileColor = $Wansi.F12
+$GDCHiddenFileColor = $Wansi.F240
+$GDCHiddenFolderColor = $Wansi.F136
+$GDCNakedFileColor = $Wansi.F28
+$GDCDefaultFileColor = $Wansi.R
+$GDCFileAttributesColors["Directory"] = $Wansi.F11
+$GDCFileAttributesColors["ReparsePoint"] = $Wansi.F0 + $Wansi.B11
+$GDCDefaultDisplayFormat = "Short"
 ```
 You can add or override specific extensions with the variable:
 ```powershell

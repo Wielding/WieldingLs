@@ -104,17 +104,18 @@ $GDCCompressedFileExtensions = @(
     ".rpm"
 )
 
-$GDCHiddenFileColor = $Wansi.F240
-$GDCHiddenFolderColor = $Wansi.F136
-$GDCNakedFileColor = $Wansi.F28
-$GDCDefaultFileColor = $Wansi.R
-
 $GDCFileAttributes = [System.IO.FileAttributes].GetEnumNames()
 
 $GDCFileAttributesColors = @{
     Directory    = $Wansi.F11
     ReparsePoint = $Wansi.F0 + $Wansi.B11
 }
+
+$GDCHiddenFileColor = $Wansi.F240
+$GDCHiddenFolderColor = $Wansi.F136
+$GDCNakedFileColor = $Wansi.F28
+$GDCDefaultFileColor = $Wansi.R
+[DisplayFormat]$GDCDefaultDisplayFormat = [DisplayFormat]::Short
 
 $GDCExtensionColors = @{}
 
@@ -360,7 +361,7 @@ function Get-DirectoryContents {
         [ValidateSet("Name", "Attributes", "LastWriteTime", "Length")]
         [SortProperty]$SortProperty,
         [ValidateSet("Long", "Short")]
-        [DisplayFormat]$DisplayFormat = [DisplayFormat]::Short,
+        [DisplayFormat]$DisplayFormat = $GDCDefaultDisplayFormat,
         [switch]$HideHeader,
         [switch]$HideTotal,
         [switch]$NoColor,
@@ -461,3 +462,4 @@ Export-ModuleMember -Variable 'GDCHiddenFolderColor'
 Export-ModuleMember -Variable 'GDCFileAttributesColors'
 Export-ModuleMember -Variable 'GDCDefaultFileColor'
 Export-ModuleMember -Variable 'GDCFileAttributes'
+Export-ModuleMember -Variable 'GDCDefaultDisplayFormat'
