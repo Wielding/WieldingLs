@@ -137,10 +137,16 @@ Example overrides
 ---
 Here are some examples of overriding the defaults by placing some code in your Powershell profile.
 
-If you want to customize WieldingLs in your profile you must also import `WieldingAnsi`
+If you want to customize WieldingLs styles or colors in your profile you must also import `WieldingAnsi`
 
 ```powershell
 Import-Module WieldingAnsi
+```
+
+The following will change the default display format to `Long`
+```powershell
+Import-Module WieldingLs
+$GDCDefaultDisplayFormat="Long"
 ```
 
 The following will change all files categorized as Data Files to be shown with a Dark Magenta foreground color, the default background color and underlined.  Note that `'Update-GDCColors'` needs to be called after modifying a category.
