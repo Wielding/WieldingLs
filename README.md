@@ -5,14 +5,9 @@ WieldingLs
 
 This is a lightweight Powershell module which aims for basic **nix* `ls` compatibility as well as colorizing directory listing output with the ability to customize file colors. 
 
-This Powershell module is a replacement for my standalone version in https://github.com/Wielding/Get-DirectoryContents.  It quickly became apparent that I wanted the ANSI escape code in it's own module for use in other scripts so I broke them up and used better naming conventions.
-
-This module depends on the WieldingAnsi module being installed which is located at https://github.com/Wielding/WieldingAnsi
-
-It has been converted to using ANSI escape codes for colors and styles to enable *nix compatibility as well as more configuration options with 256 colors plus bold, underline and inverted attributes.
+This module depends on the WieldingAnsi module for ANSI escape codes which enables colors and styles with *nix compatibility.  It can be found at https://github.com/Wielding/WieldingAnsi.
 
 Inspired by and occasionally borrowed from https://github.com/joonro/Get-ChildItemColor. 
-
 
 There is more work to be done. Here are the known limitations and planned enhancements.
 1. File attribute handling needs to be enhanced for Non-Windows systems.  This prevents the ability to identify 'executable' files on those systems since they don't rely on file extensions.
