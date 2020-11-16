@@ -90,7 +90,8 @@ $GDCExecutableFileColor = $Wansi.F2
 $GDCExecutableFileExtensions = @(
     ".exe",
     ".bat",
-    ".ps1"
+    ".ps1",
+    ".sh"
 )    
 
 $GDCCompressedFileColor = $Wansi.F129
@@ -98,11 +99,14 @@ $GDCCompressedFileExtensions = @(
     ".zip",
     ".tz",
     ".gz",
-    ".7z"
+    ".7z",
+    ".deb",
+    ".rpm"
 )
 
 $GDCHiddenFileColor = $Wansi.F240
 $GDCHiddenFolderColor = $Wansi.F136
+$GDCNakedFileColor = $Wansi.F28
 $GDCDefaultFileColor = $Wansi.R
 
 $GDCFileAttributes = [System.IO.FileAttributes].GetEnumNames()
@@ -179,6 +183,10 @@ function Get-FileColor([Object]$file) {
 
     if ($foundAttribute) {
         return $fileStyle
+    }
+
+    if (!$isDir -and $file.Extension.Length -lt 1) {
+        return $GDCNakedFileColor
     }
 
     if ($file.Name.StartsWith(".")) {

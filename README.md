@@ -10,11 +10,12 @@ This module depends on the WieldingAnsi module for ANSI escape codes which enabl
 Inspired by and occasionally borrowed from https://github.com/joonro/Get-ChildItemColor. 
 
 There is more work to be done. Here are the known limitations and planned enhancements.
-1. File attribute handling needs to be enhanced for Non-Windows systems.  This prevents the ability to identify 'executable' files on those systems since they don't rely on file extensions.
-2. Does not identify common packaging files (.e.g. '.deb', '.rpm').
-3. You can't easily pipe output from this command since it is not returning Powershell objects.  This is just for formatting your directory listing nicely.  If you need to pipe files just use `Get-ChildItem`.
-4. There is a slight delay when listing large folders in the default `Short` format since the module has to retrieve a list of all of the files before displaying them. This is necessary to format them in columns determined by the length of the longest filename and can't be helped.
-5. This list will grow since I have not done any real testing on Non-Windows systems.
+1. File attribute handling needs to be enhanced for Non-Windows systems.  This prevents the ability to identify 'executable' files on those systems since they don't rely on file extensions. 
+   * A workaround for this is to use $GDCNakedFileColor.  This is a special color for all files without an extension.
+   * So far all attempts to read **nix* file attributes are unacceptably slow for large directory listings.
+2. You can't easily pipe output from this command since it is not returning Powershell objects.  This is just for formatting your directory listing nicely.  If you need to pipe files just use `Get-ChildItem`.
+3. There is a slight delay when listing large folders in the default `Short` format since the module has to retrieve a list of all of the files before displaying them. This is necessary to format them in columns determined by the length of the longest filename and can't be helped.
+4. This list will grow since I have not done any real testing on Non-Windows systems.
 
 Main Function
 ==============
@@ -115,6 +116,7 @@ $GDCExecutableFileColor
 $GDCDocumentFileColor
 $GDCHiddenFileColor
 $GDCHiddenFolderColor
+$GDCNakedFileColor
 $GDCDefaultFileColor
 ```
 You can add or override specific extensions with the variable:
