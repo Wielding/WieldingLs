@@ -178,21 +178,3 @@ For ease of use I also add the following to my Powershell profile to override th
 Set-Alias -Name ls -Value Get-DirectoryContents
 ```
 
-Now that you have imported the module, as a bonus you can use the `$Wansi` Class in your everyday Powershell life. You now can mix all 256 colors and styles on a single Write-Host line without remembering all of the escape sequences. You can just use `Get-AnsiCodes` to see the available values and plop them in your script. I like a simple prompt with a separator line and domain identification since I log into many machines.  Here is my prompt function.
-
-```powershell
-function prompt {
-  $line =  "-".PadRight($host.UI.RawUI.WindowSize.Width - $env:USERDOMAIN.Length - 1, "-")
-  Write-Host "$($Wansi.F226)$line$($Wansi.F202) $($Wansi.BoldOn)$env:USERDOMAIN$($Wansi.R)"
-  Write-Host "$($Wansi.F15)[$($Wansi.F46)$((Get-Location).Path.Replace($($HOME), '~'))$($Wansi.F15)]$($Wansi.R)" -NoNewline
-  Write-Host "$($Wansi.F2)`n▶$($Wansi.R)" -NoNewline
- 
-  return " "
-}
-```
-
-Which gives me this
-
-![output](images/prompt.png)
-
-I may spawn off the Ansi code to a new module at some point and add some functionality since it comes in useful for cross platform Powershell goodness.
