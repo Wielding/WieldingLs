@@ -137,31 +137,50 @@ Example overrides
 ---
 Here are some examples of overriding the defaults by placing some code in your Powershell profile.
 
+If you want to customize WieldingLs in your profile you must also import `WieldingAnsi`
+
+```powershell
+Import-Module WieldingAnsi
+```
+
 The following will change all files categorized as Data Files to be shown with a Dark Magenta foreground color, the default background color and underlined.  Note that `'Update-GDCColors'` needs to be called after modifying a category.
 ```powershell
-Import-Module Get-DirectoryContents
+Import-Module WieldingAnsi
+Import-Module WieldingLs
 $GDCDataFileColor = $Wansi.F13 + $Wansi.UnderlineOn
 Update-GDCColors
 ```
 The following will cause all files with a '.xxx' extension to be shown with a Red foreground and a White background.  Calling `Update-GDCColors` is not required here since we are directly setting the extension color outside of any category.
 ```powershell
-Import-Module Get-DirectoryContents
+Import-Module WieldingAnsi
+Import-Module WieldingLs
 $GDCExtensionColors[".xxx"] = $Wansi.F9 + $Wansi.B7
+```
+
+The same as above can be accomplished using `ConvertTo-AnsiString` from the WieldingAnsi module
+```powershell
+Import-Module WieldingAnsi
+Import-Module WieldingLs
+$GDCExtensionColors[".xxx"] = ConvertTo-AnsiString  "{:F9:}{:B7:}"
 ```
 The following will show files with a '.pl1' extension to show as if it was in the 'Source Code' category.
 ```powershell
-Import-Module Get-DirectoryContents
+Import-Module WieldingAnsi
+Import-Module WieldingLs
 $GDCExtensionColors[".pl1"] = $GDCSourceCodeColor
 ```
 The following will also show files with a ".pl1" extension with the color for 'Source Code' but this requires a call to `Update-GDCColors` since we are adding the extension to the category.
 ```powershell
-Import-Module Get-DirectoryContents
+Import-Module WieldingAnsi
+Import-Module WieldingLs
 $GDCSourceCodeExtensions += ".pl1"
 Update-GDCColors
 ```
 
 The following will change all files with the `Directory` attribute to be shown with a `Blue` foreground and the default background.
 ```powershell
+Import-Module WieldingAnsi
+Import-Module WieldingLs
 $GDCFileAttributesColors["Directory"] = $Wansi.F4
 ```
 You can look at the code in `Get-DirectoryContents.pms1` to see the default file extension values as well as the exported values that can be overridden or modified.
