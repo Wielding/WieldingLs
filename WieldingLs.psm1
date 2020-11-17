@@ -298,10 +298,9 @@ function Get-DirectoryContentsWithOptions {
             $boundary += $longestName
 
             $ansiString = ConvertTo-AnsiString "$($i.Style)$($i.File.Name){:R:}"
-            # $paddingLength = $longestName - $ansiString.Length
             Write-Host $ansiString.Value -NoNewline    
-            if ($longestName - $ansiString.Length -gt 0) {
-                $padding =  " ".PadRight($longestName - $ansiString.Length, " ")
+            if ($longestName - $ansiString.NakedLength -gt 0) {
+                $padding =  " ".PadRight($longestName - $ansiString.NakedLength, " ")
                 Write-Host $padding -NoNewline
             } 
 
