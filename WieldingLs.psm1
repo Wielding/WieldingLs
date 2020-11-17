@@ -241,15 +241,17 @@ function Get-DirectoryContentsWithOptions {
 
     foreach ($file in $files) {
         ++$index
-        if ($file.Name.Length + 2 -gt $longestName) {
-            $longestName = $file.Name.Length + 2
-        }
 
         if (!$options.ShowHidden) {
             if ($file.Name.StartsWith(".")) {
                 continue
             }
         }
+
+        if ($file.Name.Length + 2 -gt $longestName) {
+            $longestName = $file.Name.Length + 2
+        }
+
 
         if ($options.ShowColor) {
             $fileStyle = Get-FileColor $file
