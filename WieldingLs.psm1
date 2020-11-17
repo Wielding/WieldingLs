@@ -33,7 +33,7 @@ class FileItem {
     [string]$Style
 }
 
-$GDCSourceCodeColor = $Wansi.F82
+$GDCSourceCodeColor = "{:F82:}"
 $GDCSourceCodeExtensions = @(
     ".ahk",
     ".awk",
@@ -60,7 +60,7 @@ $GDCSourceCodeExtensions = @(
     ".vbs", ".vbe", ".wsf", ".wsc", ".asp"
 )
 
-$GDCDataFileColor = $Wansi.F14
+$GDCDataFileColor = "{:F14:}"
 $GDCDataFileExtensions = @(
     ".csv",
     ".dat",
@@ -73,12 +73,12 @@ $GDCDataFileExtensions = @(
     ".xml"
 )
 
-$GDCLogFileColor = $Wansi.F9
+$GDCLogFileColor = "{:F9:}"
 $GDCLogFileExtensions = @(
     ".log"
 )
 
-$GDCDocumentFileColor = $Wansi.F12
+$GDCDocumentFileColor = "{:F12:}"
 $GDCDocumentFileExtensions = @(
     ".doc",
     ".docx",
@@ -86,7 +86,7 @@ $GDCDocumentFileExtensions = @(
     ".xls"
 )    
 
-$GDCExecutableFileColor = $Wansi.F2
+$GDCExecutableFileColor = "{:F2:}"
 $GDCExecutableFileExtensions = @(
     ".exe",
     ".bat",
@@ -94,7 +94,7 @@ $GDCExecutableFileExtensions = @(
     ".sh"
 )    
 
-$GDCCompressedFileColor = $Wansi.F129
+$GDCCompressedFileColor = "{:F129:}"
 $GDCCompressedFileExtensions = @(
     ".zip",
     ".tz",
@@ -107,14 +107,14 @@ $GDCCompressedFileExtensions = @(
 $GDCFileAttributes = [System.IO.FileAttributes].GetEnumNames()
 
 $GDCFileAttributesColors = @{
-    Directory    = $Wansi.F11
-    ReparsePoint = $Wansi.F0 + $Wansi.B11
+    Directory    = "{:F11:}"
+    ReparsePoint = "{:F0:}{:B11:}"
 }
 
-$GDCHiddenFileColor = $Wansi.F240
-$GDCHiddenFolderColor = $Wansi.F136
-$GDCNakedFileColor = $Wansi.F28
-$GDCDefaultFileColor = $Wansi.R
+$GDCHiddenFileColor = "{:F240:}"
+$GDCHiddenFolderColor = "{:F136:}"
+$GDCNakedFileColor = "{:F28:}"
+$GDCDefaultFileColor = "{:R:}"
 [DisplayFormat]$GDCDefaultDisplayFormat = [DisplayFormat]::Short
 
 $GDCExtensionColors = @{}
@@ -206,7 +206,7 @@ function Get-DirectoryContentsWithOptions {
         [GDCOptions]$options
     )
 
-    $defaultColor = $Wansi.R
+    $defaultColor = "{:R:}"
     $longestName = 0
     $totalSize = 0
     $index = 0
@@ -230,7 +230,7 @@ function Get-DirectoryContentsWithOptions {
         }
     }
     catch {
-        Write-Host "$($Wansi.F9)[$($options.Path)] was not found$($Wansi.R)"
+        Write-Wansi "{:F9:}[$($options.Path)] was not found{:R:}`n"
         return 8
     }
 
@@ -241,8 +241,8 @@ function Get-DirectoryContentsWithOptions {
 
     foreach ($file in $files) {
         ++$index
-        if ($file.Name.Length + 1 -gt $longestName) {
-            $longestName = $file.Name.Length + 1
+        if ($file.Name.Length + 2 -gt $longestName) {
+            $longestName = $file.Name.Length + 2
         }
 
         if (!$options.ShowHidden) {
@@ -274,7 +274,7 @@ function Get-DirectoryContentsWithOptions {
             else {
                 Write-Host ("{0, 10}`t" -f $(Write-FileLength $file.Length)) -NoNewline
             }
-            Write-Host ("$($fileStyle)$($file.Name)$($Wansi.R)")
+            Write-Wansi ("$($fileStyle)$($file.Name){:R:}`n")
         }
 
         # Build Short Format Array for display after the loop
@@ -296,9 +296,16 @@ function Get-DirectoryContentsWithOptions {
             }
 
             $boundary += $longestName
-            $paddingLength = $longestName - $i.File.Name.Length
-            Write-Host ("$($i.Style){0, -$($i.File.Name.Length)}" -f $i.File.Name) -NoNewLine
-            Write-Host $(" " * $paddingLength) -NoNewline
+
+            $ansiString = ConvertTo-AnsiString "$($i.Style)$($i.File.Name){:R:}"
+            # $paddingLength = $longestName - $ansiString.Length
+            Write-Host $ansiString.Value -NoNewline    
+            if ($longestName - $ansiString.Length -gt 0) {
+                $padding =  " ".PadRight($longestName - $ansiString.Length, " ")
+                Write-Host $padding -NoNewline
+            } 
+
+
         }     
     }
    
@@ -407,7 +414,7 @@ function Get-DirectoryContents {
                         }
                         "-" {}
                         default {
-                            Write-Host "$($Wansi.F9)[$char] unknown option$($Wansi.R)"
+                            Write-Wansi "{:F9:}[$char] unknown option{:R:}`n"
                             $returnCode = 8
                         }
                     }
@@ -442,6 +449,8 @@ function Get-DirectoryContents {
 }
 
 Update-GDCColors
+
+$GDCExtensionColors[".xxx"] = "{:F40:}*{:F93:}{:UnderlineOn:}"
 
 Export-ModuleMember -Function Out-Default, 'Get-DirectoryContents'
 Export-ModuleMember -Function Out-Default, 'Update-GDCColors'

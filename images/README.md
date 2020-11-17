@@ -3,9 +3,9 @@ WieldingLs
 
 :warning: This is a work in progress so the master branch could break your Powershell profile if you customize any of the settings.:warning: 
 
-This is a Powershell module which aims for basic **nix* `ls` compatibility with the ability to customize the colors and styles of the displayed filenames. 
+This is a lightweight Powershell module which aims for basic **nix* `ls` compatibility as well as colorizing directory listing output with the ability to customize file colors. 
 
-This module depends on the [WieldingAnsi](https://github.com/Wielding/WieldingAnsi) Powershell module for handling ANSI escape codes which enables colors and styles that are *nix compatible.
+This module depends on the WieldingAnsi module for ANSI escape codes which enables colors and styles with *nix compatibility.  It can be found at https://github.com/Wielding/WieldingAnsi.
 
 Inspired by and occasionally borrowed from https://github.com/joonro/Get-ChildItemColor. 
 
@@ -95,17 +95,17 @@ Import-Module Get-DirectoryContents
 
 Customization
 -------------
-This module uses ANSI color and format codes to apply styles to your filenames.  I have picked my defaults which can be overridden in your Powershell profile. All styles are represented by strings which are interpreted by the [WieldingAnsi](https://github.com/Wielding/WieldingAnsi) Powershell module.  
+This module uses ANSI color and format codes to apply styles to your filenames.  I have picked my defaults which can be overridden in your Powershell profile.
 
 To see the colors and styles that can be used type `Get-AnsiCodes` on the command line after you have imported the module to see what is available.  The attributes and a color table will be displayed with the foreground colors starting with an 'F' and background colors starting with a 'B' (e.g. `"{:F7:}"` is a 'white' foreground color).
 
-You can also set and clear Bold, Inverse and Underline styles using these values.
+You can also set Bold, Inverse and Underline styles using these values.
 
 1. Bold - `"{:BoldOn:}` : `"{:BoldOff:}"`
 2. Underline - `"{:UnderlineOn:}"` : `"{:UnderlineOff:}"`
 3. Inverse - `"{:InverseOn:}"` : `"{:InverseOff:}"`
 
-To reset a style to the default for the console use the value `"{:R:}"`
+To reset all to the default for the console use the value `"{:R:}"`
 
 Here are the group colors, styles and defaults that can be overridden with the current defaults
 ```powershell
@@ -154,7 +154,7 @@ The following will cause all files with a '.xxx' extension to be shown with an u
 Import-Module WieldingLs
 $GDCExtensionColors[".xxx"] = "{:F40:}*{:F93:}{:UnderlineOn:}"
 ```
-Here is a sample with the ".xxx" styling from above using the alias `ls` set to `Get-DirectoryContents`
+Here is a sample with the ".xxx" styling from above
 ![output](images/sample1.png)
 
 The following will show files with a '.pl1' extension to show as if it was in the 'Source Code' category.
@@ -172,7 +172,7 @@ Update-GDCColors
 The following will change all files with the `Directory` attribute to be shown with a `Blue` foreground and the default background.
 ```powershell
 Import-Module WieldingLs
-$GDCFileAttributesColors["Directory"] = "{:F4:}"
+$GDCFileAttributesColors["Directory"] = $Wansi.F4
 ```
 You can look at the code in `Get-DirectoryContents.pms1` to see the default file extension values as well as the exported values that can be overridden or modified.
 
