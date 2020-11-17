@@ -3,6 +3,8 @@ WieldingLs
 
 :warning: This is a work in progress so the master branch could break your Powershell profile if you customize any of the settings.:warning: 
 
+When using this module under Windows it works best when paired with [Windows Terminal](https://github.com/microsoft/terminal).  Any console version prior to Windows 1903 may give unpredictable results and might not work at all.
+
 This is a Powershell module which aims for basic **nix* `ls` compatibility with the ability to customize the colors and styles of the displayed filenames. 
 
 This module depends on the [WieldingAnsi](https://github.com/Wielding/WieldingAnsi) Powershell module for handling ANSI escape codes which enables colors and styles that are *nix compatible.
