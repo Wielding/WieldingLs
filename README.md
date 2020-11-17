@@ -5,7 +5,7 @@ WieldingLs
 
 For Windows users this module requires a minimum of Windows 10 1903.  When using this module under Windows please use [Windows Terminal](https://github.com/microsoft/terminal).  Any other console may give unpredictable results and might not work at all.
 
-This module has been tested under WSL and seems to work fine but more testing is require to back up that claim.
+This module has been tested under WSL and seems to work fine but more testing is required to back up that claim.
 
 This is a Powershell module which aims for basic **nix* `ls` compatibility with the ability to customize the colors and styles of the displayed filenames. 
 
