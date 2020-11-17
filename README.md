@@ -167,7 +167,7 @@ The same as above can be accomplished using `ConvertTo-AnsiString` from the Wiel
 ```powershell
 Import-Module WieldingAnsi
 Import-Module WieldingLs
-$GDCExtensionColors[".xxx"] = ConvertTo-AnsiString  "{:F9:}{:B7:}"
+$GDCExtensionColors[".xxx"] = (ConvertTo-AnsiString  "{:F9:}{:B7:}").Value
 ```
 The following will show files with a '.pl1' extension to show as if it was in the 'Source Code' category.
 ```powershell
