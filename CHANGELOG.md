@@ -1,6 +1,14 @@
 Change Log
 =======
 
+### Changes
+
+## 0.0.8 - 2020-11-18
+- Added Get-WieldingAnsiInfo
+
+## 0.0.7 - 2020-11-18
+- Modified manifest
+
 ## 0.0.6 - 2020-11-18
 ### Changes
 - Fixed listing empty folder on Windows hosts

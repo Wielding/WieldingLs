@@ -12,7 +12,7 @@
 RootModule = 'WieldingLs.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.7'
+ModuleVersion = '0.0.9'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -69,7 +69,8 @@ RequiredModules = @('WieldingAnsi')
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Get-DirectoryContents', 'Update-GDCColors', 'Get-AnsiCodes'
+FunctionsToExport = 'Get-DirectoryContents', 'Update-GDCColors', 'Get-AnsiCodes', 
+               'Get-WieldingLsInfo'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -114,7 +115,7 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = 'updated manifest'
+        ReleaseNotes = 'fixed Get-WieldingLsInfo for gallery installs'
 
         # Prerelease string of this module
         # Prerelease = ''

@@ -119,6 +119,13 @@ $GDCDefaultFileColor = "{:R:}"
 
 $GDCExtensionColors = @{}
 
+
+function Get-WieldingLsInfo {
+    $moduleName = (Get-ChildItem "$PSScriptRoot/*.psd1").Name
+
+    Import-PowerShellDataFile -Path "$PSScriptRoot/$moduleName"
+}
+
 function Update-GDCColors {
     foreach ($extension in $GDCSourceCodeExtensions) {
         $GDCExtensionColors[$extension] = $GDCSourceCodeColor
@@ -459,6 +466,7 @@ $GDCExtensionColors[".xxx"] = "{:F40:}*{:F93:}{:UnderlineOn:}"
 Export-ModuleMember -Function Out-Default, 'Get-DirectoryContents'
 Export-ModuleMember -Function Out-Default, 'Update-GDCColors'
 Export-ModuleMember -Function Out-Default, 'Get-AnsiCodes'
+Export-ModuleMember -Function Out-Default, 'Get-WieldingLsInfo'
 Export-ModuleMember -Variable 'GDCExtensionColors'
 Export-ModuleMember -Variable 'GDCSourceCodeColor'
 Export-ModuleMember -Variable 'GDCSourceCodeExtensions'
