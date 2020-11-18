@@ -3,6 +3,9 @@ Change Log
 
 ### Changes
 
+## 0.0.9 - 2020-11-18
+- Fixed Get-WieldingAnsiInfo for gallery installs
+
 ## 0.0.8 - 2020-11-18
 - Added Get-WieldingAnsiInfo
 
