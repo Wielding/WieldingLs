@@ -12,7 +12,7 @@
 RootModule = 'WieldingLs.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.6'
+ModuleVersion = '0.0.7'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -105,7 +105,7 @@ PrivateData = @{
         Tags = 'ANSI','ls','Get-DirectoryContents','Style','Color','Linux'
 
         # A URL to the license for this module.
-        LicenseUri = 'https://github.com/Wielding/WieldingLs/LICENSE'
+        LicenseUri = 'https://raw.githubusercontent.com/Wielding/WieldingLs/master/LICENSE'
 
         # A URL to the main website for this project.
         ProjectUri = 'https://github.com/Wielding/WieldingLs'
@@ -114,7 +114,7 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = 'fixed listing empty folder'
+        ReleaseNotes = 'updated manifest'
 
         # Prerelease string of this module
         # Prerelease = ''
