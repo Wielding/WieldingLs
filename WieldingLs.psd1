@@ -12,7 +12,7 @@
     RootModule = 'WieldingLs.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.0.1'
+    ModuleVersion     = '0.0.2'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -118,7 +118,7 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags = 'ANSI,Ls,Get-DirectoryContents,Style,Color'
+            Tags = @('ANSI','ls','Get-DirectoryContents','Style','Color', "Linux")
 
             # A URL to the license for this module.
             LicenseUri = 'https://github.com/Wielding/WieldingAnsi/LICENSE'
@@ -130,7 +130,7 @@
             # IconUri = ''
 
             # ReleaseNotes of this module
-            ReleaseNotes = '0.0.1 - Initial version'
+            ReleaseNotes = '0.0.2 - Fixed Gallery Tags'
 
             # Prerelease string of this module
             # Prerelease = ''
