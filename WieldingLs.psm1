@@ -223,15 +223,18 @@ function Get-DirectoryContentsWithOptions {
 
     try {
         if ($options.SortProperty -ne "") {
-            $files = Get-ChildItem -Path $options.Path -Attributes $attributes -ErrorAction stop | Sort-Object -Property $options.SortProperty
+            $files = Get-ChildItem $options.Path -Attributes $attributes -ErrorAction stop | Sort-Object -Property $options.SortProperty
         }
         else {
-            $files = Get-ChildItem -Path $options.Path -Attributes $attributes -ErrorAction stop
+            $files = Get-ChildItem $options.Path -Attributes $attributes -ErrorAction stop
         }
     }
     catch {
-        Write-Wansi "{:F9:}[$($options.Path)] was not found{:R:}`n"
-        return 8
+        if ($options.Path -ne ".") {
+            Write-Wansi "{:F9:}[$($options.Path)] was not found{:R:}`n"
+            return 8
+        }
+        return 0
     }
 
     if ($options.ShowHeader) {

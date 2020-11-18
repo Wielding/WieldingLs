@@ -12,7 +12,7 @@
 RootModule = 'WieldingLs.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.4'
+ModuleVersion = '0.0.6'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -94,8 +94,7 @@ AliasesToExport = @()
 # ModuleList = @()
 
 # List of all files packaged with this module
-FileList = 'WieldingLs.psd1', 'WieldingLs.psm1', 'README.md', 'CHANGELOG.md', 
-               'LICENSE'
+FileList = 'WieldingLs.psd1', 'WieldingLs.psm1'
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{
@@ -115,7 +114,7 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = 'updated manifest'
+        ReleaseNotes = 'fixed listing empty folder'
 
         # Prerelease string of this module
         # Prerelease = ''
