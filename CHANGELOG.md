@@ -3,6 +3,18 @@ Change Log
 
 ## **Latest**
 
+### 0.0.14-Alpha - 2020-11-18
+#### Changes
+- removed WieldingAnsi from ExternalModuleDependencies
+
+### 0.0.13-Alpha - 2020-11-18
+#### Changes
+- removed WieldingAnsi from ExternalModuleDependencies
+
+### 0.0.12-Alpha - 2020-11-18
+#### Changes
+- removed WieldingAnsi from ExternalModuleDependencies
+
 ### 0.0.12-Alpha - 2020-11-18
 #### Changes
 - moved customization fields to class

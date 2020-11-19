@@ -12,7 +12,7 @@
 RootModule = 'WieldingLs.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.12'
+ModuleVersion = '0.0.14'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -108,7 +108,7 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = 'moved customization fields to class'
+        ReleaseNotes = 'removed WieldingAnsi from ExternalModuleDependencies'
 
         # Prerelease string of this module
         Prerelease = 'Alpha'
@@ -117,7 +117,7 @@ PrivateData = @{
         # RequireLicenseAcceptance = $false
 
         # External dependent modules of this module
-        ExternalModuleDependencies = @('WieldingAnsi')
+        # ExternalModuleDependencies = @()
 
     } # End of PSData hashtable
 
