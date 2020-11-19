@@ -53,7 +53,7 @@ class GdcTheme {
     [string]$NakedFileColor
     [string]$DefaultFileColor
     $ExtensionColors = @{}
-    [DisplayFormat]$DefaultDisplayFormat
+    [string]$DefaultDisplayFormat
 }
 
 

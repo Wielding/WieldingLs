@@ -12,7 +12,7 @@
 RootModule = 'WieldingLs.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.14'
+ModuleVersion = '0.0.15'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -108,7 +108,7 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = 'removed WieldingAnsi from ExternalModuleDependencies'
+        ReleaseNotes = 'changed DefaultDisplayFormat to string for serializing'
 
         # Prerelease string of this module
         Prerelease = 'Alpha'

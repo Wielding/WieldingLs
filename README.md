@@ -196,6 +196,23 @@ $GdcTheme.FileAttributesColors["Directory"] = "{:F4:}"
 ```
 You can look at the code in `Get-DirectoryContents.pms1` to see the default file extension values as well as the exported values that can be overridden or modified.
 
+Another option for customizing is saving the `$GdcTheme` class contents to a file.  You can save the current state of the theme using the following powershell code.
+
+```powershell
+  Set-Content -Path ./theme.json (ConvertTo-Json -InputObject $GdcTheme)
+```
+
+This will save the current state of your theme including any modifcations you have made using the previous methods to the file `theme.json` in the current directory.
+
+You can now edit that file as JSON and then reload it to `$GdcThem` with the following code at the top of your powershell profile.
+
+```powershell
+Import-Module WieldingLs
+$GdcTheme = (Get-Content ./theme.json | ConvertFrom-Json -AsHashtable)
+```
+
+
+
 Sample Output
 -------------
 ![output](images/default.png)
