@@ -3,6 +3,10 @@ Change Log
 
 ## **Latest**
 
+### 0.0.11-Alpha - 2020-11-18
+#### Changes
+- moved customization fields to class
+
 ### Changes
 ## 0.0.10 - 2020-11-18
 - Tagged as Alpha

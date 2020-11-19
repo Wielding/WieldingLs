@@ -29,7 +29,7 @@ Inspired by and occasionally borrowed from https://github.com/joonro/Get-ChildIt
 
 There is more work to be done. Here are the known limitations and planned enhancements.
 1. File attribute handling needs to be enhanced for Non-Windows systems.  This prevents the ability to identify 'executable' files on those systems since they don't rely on file extensions. 
-   * A workaround for this is to use $GDCNakedFileColor.  This is a special color for all files without an extension. This is not a great solution but it is better than nothing since most files have an extension.
+   * A workaround for this is to use $GdcTheme.NakedFileColor.  This is a special color for all files without an extension. This is not a great solution but it is better than nothing since most files have an extension.
    * So far all attempts to read **nix* file attributes are unacceptably slow for large directory listings.
 2. You can't pipe output from this command as objects since it is just returning text.  This is just for formatting your directory listing nicely.  If you need to pipe file objects just use `Get-ChildItem`.
 3. There is a slight delay when listing large folders in the default `Short` format since the module has to retrieve a list of all of the files before displaying them. This is necessary to format them in columns determined by the length of the longest filename and can't be helped.
@@ -125,30 +125,32 @@ You can also set and clear Bold, Inverse and Underline styles using these values
 
 To reset a style to the default for the console use the value `"{:R:}"`
 
+All of the styles that can be overridded are contained in the exported `$GdcTheme` class.
+
 Here are the group colors, styles and defaults that can be overridden with the current defaults
 ```powershell
-$GDCSourceCodeColor = "{:F82:}"
-$GDCDataFileColor = "{:F14:}"
-$GDCLogFileColor = "{:F9:}"
-$GDCCompressedFileColor = "{:F129:}"
-$GDCExecutableFileColor = "{:F2:}"
-$GDCDocumentFileColor = "{:F12:}"
-$GDCHiddenFileColor = "{:F240:}"
-$GDCHiddenFolderColor = "{:F136:}"
-$GDCNakedFileColor = "{:F28:}"
-$GDCDefaultFileColor = "{:R:}"
-$GDCFileAttributesColors["Directory"] = "{:F11:}"
-$GDCFileAttributesColors["ReparsePoint"] = "{:F0:}{:B11:}"
-$GDCDefaultDisplayFormat = "Short"
+$GdcTheme.SourceCodeColor = "{:F82:}"
+$GdcTheme.DataFileColor = "{:F14:}"
+$GdcTheme.GDCLogFileColor = "{:F9:}"
+$GdcTheme.CompressedFileColor = "{:F129:}"
+$GdcTheme.ExecutableFileColor = "{:F2:}"
+$GdcTheme.DocumentFileColor = "{:F12:}"
+$GdcTheme.HiddenFileColor = "{:F240:}"
+$GdcTheme.HiddenFolderColor = "{:F136:}"
+$GdcTheme.NakedFileColor = "{:F28:}"
+$GdcTheme.DefaultFileColor = "{:R:}"
+$GdcTheme.FileAttributesColors["Directory"] = "{:F11:}"
+$GdcTheme.FileAttributesColors["ReparsePoint"] = "{:F0:}{:B11:}"
+$GdcTheme.DefaultDisplayFormat = "Short"
 ```
 You can add or override specific extensions with the variable:
 ```powershell
-$GDCExtensionColors
+$GdcTheme.ExtensionColors
 ```
 
 You can override specific file attributes with the variable:
 ```powershell
-$GDCFileAttributesColors
+$GdcTheme.FileAttributesColors
 ```
 
 Example overrides
@@ -158,19 +160,19 @@ Here are some examples of overriding the defaults by placing some code in your P
 The following will change the default display format to `Long`
 ```powershell
 Import-Module WieldingLs
-$GDCDefaultDisplayFormat="Long"
+$GdcTheme.DefaultDisplayFormat="Long"
 ```
 
 The following will change all files categorized as Data Files to be shown with a Dark Magenta foreground color, the default background color and underlined.  Note that `'Update-GDCColors'` needs to be called after modifying a category.
 ```powershell
 Import-Module WieldingLs
-$GDCDataFileColor = "{:F13:}{:UnderlineOn:}"
+$GdcTheme.DataFileColor = "{:F13:}{:UnderlineOn:}"
 Update-GDCColors
 ```
 The following will cause all files with a '.xxx' extension to be shown with an underlined Purple foreground.  It will also have a Green '*' preceding the filename. You can add characters to the start of any filename but keep it to a single character.  It might throw off the column formatting if it gets too long. Calling `Update-GDCColors` is not required here since we are directly setting the extension color outside of any category.
 ```powershell
 Import-Module WieldingLs
-$GDCExtensionColors[".xxx"] = "{:F40:}*{:F93:}{:UnderlineOn:}"
+$GdcTheme.ExtensionColors[".xxx"] = "{:F40:}*{:F93:}{:UnderlineOn:}"
 ```
 Here is a sample with the ".xxx" styling from above using the alias `ls` set to `Get-DirectoryContents`
 ![output](images/sample1.png)
@@ -178,19 +180,19 @@ Here is a sample with the ".xxx" styling from above using the alias `ls` set to 
 The following will show files with a '.pl1' extension to show as if it was in the 'Source Code' category.
 ```powershell
 Import-Module WieldingLs
-$GDCExtensionColors[".pl1"] = $GDCSourceCodeColor
+$GdcTheme.ExtensionColors[".pl1"] = $GdcTheme.SourceCodeColor
 ```
 The following will also show files with a ".pl1" extension with the color for 'Source Code' but this requires a call to `Update-GDCColors` since we are adding the extension to the category.
 ```powershell
 Import-Module WieldingLs
-$GDCSourceCodeExtensions += ".pl1"
+$GdcTheme.SourceCodeExtensions += ".pl1"
 Update-GDCColors
 ```
 
 The following will change all files with the `Directory` attribute to be shown with a `Blue` foreground and the default background.
 ```powershell
 Import-Module WieldingLs
-$GDCFileAttributesColors["Directory"] = "{:F4:}"
+$GdcTheme.FileAttributesColors["Directory"] = "{:F4:}"
 ```
 You can look at the code in `Get-DirectoryContents.pms1` to see the default file extension values as well as the exported values that can be overridden or modified.
 

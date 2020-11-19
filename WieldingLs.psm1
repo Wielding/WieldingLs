@@ -33,8 +33,34 @@ class FileItem {
     [string]$Style
 }
 
-$GDCSourceCodeColor = "{:F82:}"
-$GDCSourceCodeExtensions = @(
+class GdcTheme {
+    [string]$SourceCodeColor
+    $SourceCodeExtensions = @()
+    [string]$DataFileColor
+    $DataFileExtensions = @()
+    [string]$LogFileColor
+    $LogFileExtensions = @()
+    [string]$DocumentFileColor
+    $DocumentFileExtensions = @()
+    [string]$ExecutableFileColor
+    $ExecutableFileExtensions = @()
+    [string]$CompressedFileColor
+    $CompressedFileExtensions = @()
+    $FileAttributes = @()
+    $FileAttributesColors =  @{}
+    [string]$HiddenFileColor
+    [string]$HiddenFolderColor
+    [string]$NakedFileColor
+    [string]$DefaultFileColor
+    $ExtensionColors = @{}
+    [DisplayFormat]$DefaultDisplayFormat
+}
+
+
+$GdcTheme = New-Object -TypeName GdcTheme
+
+$GdcTheme.SourceCodeColor = "{:F82:}"
+$GdcTheme.SourceCodeExtensions = @(
     ".ahk",
     ".awk",
     ".c", ".h",
@@ -60,8 +86,8 @@ $GDCSourceCodeExtensions = @(
     ".vbs", ".vbe", ".wsf", ".wsc", ".asp"
 )
 
-$GDCDataFileColor = "{:F14:}"
-$GDCDataFileExtensions = @(
+$GdcTheme.DataFileColor = "{:F14:}"
+$GdcTheme.DataFileExtensions = @(
     ".csv",
     ".dat",
     ".dxf",
@@ -73,29 +99,29 @@ $GDCDataFileExtensions = @(
     ".xml"
 )
 
-$GDCLogFileColor = "{:F9:}"
-$GDCLogFileExtensions = @(
+$GdcTheme.LogFileColor = "{:F9:}"
+$GdcTheme.LogFileExtensions = @(
     ".log"
 )
 
-$GDCDocumentFileColor = "{:F12:}"
-$GDCDocumentFileExtensions = @(
+$GdcTheme.DocumentFileColor = "{:F12:}"
+$GdcTheme.DocumentFileExtensions = @(
     ".doc",
     ".docx",
     ".md",
     ".xls"
 )    
 
-$GDCExecutableFileColor = "{:F2:}"
-$GDCExecutableFileExtensions = @(
+$GdcTheme.ExecutableFileColor = "{:F2:}"
+$GdcTheme.ExecutableFileExtensions = @(
     ".exe",
     ".bat",
     ".ps1",
     ".sh"
 )    
 
-$GDCCompressedFileColor = "{:F129:}"
-$GDCCompressedFileExtensions = @(
+$GdcTheme.CompressedFileColor = "{:F129:}"
+$GdcTheme.CompressedFileExtensions = @(
     ".zip",
     ".tz",
     ".gz",
@@ -104,21 +130,18 @@ $GDCCompressedFileExtensions = @(
     ".rpm"
 )
 
-$GDCFileAttributes = [System.IO.FileAttributes].GetEnumNames()
+$GdcTheme.FileAttributes = [System.IO.FileAttributes].GetEnumNames()
 
-$GDCFileAttributesColors = @{
+$GdcTheme.FileAttributesColors = @{
     Directory    = "{:F11:}"
     ReparsePoint = "{:F0:}{:B11:}"
 }
 
-$GDCHiddenFileColor = "{:F240:}"
-$GDCHiddenFolderColor = "{:F136:}"
-$GDCNakedFileColor = "{:F28:}"
-$GDCDefaultFileColor = "{:R:}"
-[DisplayFormat]$GDCDefaultDisplayFormat = [DisplayFormat]::Short
-
-$GDCExtensionColors = @{}
-
+$GdcTheme.HiddenFileColor = "{:F240:}"
+$GdcTheme.HiddenFolderColor = "{:F136:}"
+$GdcTheme.NakedFileColor = "{:F28:}"
+$GdcTheme.DefaultFileColor = "{:R:}"
+[DisplayFormat]$GdcTheme.DefaultDisplayFormat = [DisplayFormat]::Short
 
 function Get-WieldingLsInfo {
     $moduleName = (Get-ChildItem "$PSScriptRoot/*.psd1").Name
@@ -127,28 +150,28 @@ function Get-WieldingLsInfo {
 }
 
 function Update-GDCColors {
-    foreach ($extension in $GDCSourceCodeExtensions) {
-        $GDCExtensionColors[$extension] = $GDCSourceCodeColor
+    foreach ($extension in $GdcTheme.SourceCodeExtensions) {
+        $GdcTheme.ExtensionColors[$extension] = $GdcTheme.SourceCodeColor
     }
 
-    foreach ($extension in $GDCDataFileExtensions) {
-        $GDCExtensionColors[$extension] = $GDCDataFileColor
+    foreach ($extension in $GdcTheme.DataFileExtensions) {
+        $GdcTheme.ExtensionColors[$extension] = $GdcTheme.DataFileColor
     }
 
-    foreach ($extension in $GDCLogFileExtensions) {
-        $GDCExtensionColors[$extension] = $GDCLogFileColor
+    foreach ($extension in $GdcTheme.LogFileExtensions) {
+        $GdcTheme.ExtensionColors[$extension] = $GdcTheme.LogFileColor
     }    
 
-    foreach ($extension in $GDCCompressedFileExtensions) {
-        $GDCExtensionColors[$extension] = $GDCCompressedFileColor
+    foreach ($extension in $GdcTheme.CompressedFileExtensions) {
+        $GdcTheme.ExtensionColors[$extension] = $GdcTheme.CompressedFileColor
     }        
 
-    foreach ($extension in $GDCExecutableFileExtensions) {
-        $GDCExtensionColors[$extension] = $GDCExecutableFileColor
+    foreach ($extension in $GdcTheme.ExecutableFileExtensions) {
+        $GdcTheme.ExtensionColors[$extension] = $GdcTheme.ExecutableFileColor
     }            
 
-    foreach ($extension in $GDCDocumentFileExtensions) {
-        $GDCExtensionColors[$extension] = $GDCDocumentFileColor
+    foreach ($extension in $GdcTheme.DocumentFileExtensions) {
+        $GdcTheme.ExtensionColors[$extension] = $GdcTheme.DocumentFileColor
     }                
 }
 
@@ -172,21 +195,21 @@ function Write-FileLength {
 }
 
 function Get-FileColor([Object]$file) {
-    $fileStyle = $GDCDefaultFileColor
+    $fileStyle = $GdcTheme.DefaultFileColor
     $foundAttribute = $false
     $isDir = ($file.Attributes -band [System.IO.FileAttributes]::Directory) -eq [System.IO.FileAttributes]::Directory
 
-    foreach ($attribute in $GDCFileAttributes) {
+    foreach ($attribute in $GdcTheme.FileAttributes) {
         if (($file.Attributes -band $attribute) -eq $attribute ) {
-            if ($GDCFileAttributesColors.ContainsKey($attribute)) {
-                $fileStyle = $GDCFileAttributesColors[$attribute]
+            if ($GdcTheme.FileAttributesColors.ContainsKey($attribute)) {
+                $fileStyle = $GdcTheme.FileAttributesColors[$attribute]
                 $foundAttribute = $true
             }
         }        
     }
 
     if ($isDir -and $file.Name.StartsWith(".")) {
-        $fileStyle = $GDCHiddenFolderColor
+        $fileStyle = $GdcTheme.HiddenFolderColor
     }
 
     if ($foundAttribute) {
@@ -194,15 +217,15 @@ function Get-FileColor([Object]$file) {
     }
 
     if (!$isDir -and $file.Extension.Length -lt 1) {
-        return $GDCNakedFileColor
+        return $GdcTheme.NakedFileColor
     }
 
     if ($file.Name.StartsWith(".")) {
-        return $GDCHiddenFileColor
+        return $GdcTheme.HiddenFileColor
     }
 
-    if ($GDCExtensionColors.ContainsKey($file.Extension)) {
-        return $GDCExtensionColors[$file.Extension]
+    if ($GdcTheme.ExtensionColors.ContainsKey($file.Extension)) {
+        return $GdcTheme.ExtensionColors[$file.Extension]
     }
 
     return $fileStyle
@@ -379,7 +402,7 @@ function Get-DirectoryContents {
         [ValidateSet("Name", "Attributes", "LastWriteTime", "Length")]
         [SortProperty]$SortProperty,
         [ValidateSet("Long", "Short")]
-        [DisplayFormat]$DisplayFormat = $GDCDefaultDisplayFormat,
+        [DisplayFormat]$DisplayFormat =$GdcTheme.DefaultDisplayFormat,
         [switch]$HideHeader,
         [switch]$HideTotal,
         [switch]$NoColor,
@@ -461,27 +484,10 @@ function Get-DirectoryContents {
 
 Update-GDCColors
 
-$GDCExtensionColors[".xxx"] = "{:F40:}*{:F93:}{:UnderlineOn:}"
+$GdcTheme.ExtensionColors[".xxx"] = "{:F40:}*{:F93:}{:UnderlineOn:}"
 
 Export-ModuleMember -Function Out-Default, 'Get-DirectoryContents'
 Export-ModuleMember -Function Out-Default, 'Update-GDCColors'
 Export-ModuleMember -Function Out-Default, 'Get-AnsiCodes'
 Export-ModuleMember -Function Out-Default, 'Get-WieldingLsInfo'
-Export-ModuleMember -Variable 'GDCExtensionColors'
-Export-ModuleMember -Variable 'GDCSourceCodeColor'
-Export-ModuleMember -Variable 'GDCSourceCodeExtensions'
-Export-ModuleMember -Variable 'GDCDataFileColor'
-Export-ModuleMember -Variable 'GDCDataFileExtensions'
-Export-ModuleMember -Variable 'GDCCompressedFileColor'
-Export-ModuleMember -Variable 'GDCCompressedFileExtensions'
-Export-ModuleMember -Variable 'GDCExecutableFileColor'
-Export-ModuleMember -Variable 'GDCExecutableFileExtensions'
-Export-ModuleMember -Variable 'GDCDocumentFileColor'
-Export-ModuleMember -Variable 'GDCDocumentFileExtensions'
-Export-ModuleMember -Variable 'GDCHiddenFileColor'
-Export-ModuleMember -Variable 'GDCHiddenFolderColor'
-Export-ModuleMember -Variable 'GDCFileAttributesColors'
-Export-ModuleMember -Variable 'GDCDefaultFileColor'
-Export-ModuleMember -Variable 'GDCFileAttributes'
-Export-ModuleMember -Variable 'GDCNakedFileColor'
-Export-ModuleMember -Variable 'GDCDefaultDisplayFormat'
+Export-ModuleMember -Variable 'GdcTheme'

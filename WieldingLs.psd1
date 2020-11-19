@@ -12,7 +12,7 @@
 RootModule = 'WieldingLs.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.10'
+ModuleVersion = '0.0.11'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -76,14 +76,7 @@ FunctionsToExport = 'Get-DirectoryContents', 'Update-GDCColors', 'Get-AnsiCodes'
 CmdletsToExport = @()
 
 # Variables to export from this module
-VariablesToExport = 'GDCExtensionColors', 'GDCSourceCodeColor', 'GDCSourceCodeExtensions', 
-               'GDCDataFileColor', 'GDCDataFileExtensions', 'GDCCompressedFileColor', 
-               'GDCCompressedFileExtensions', 'GDCExecutableFileColor', 
-               'GDCExecutableFileExtensions', 'GDCDocumentFileColor', 
-               'GDCDocumentFileExtensions', 'GDCHiddenFileColor', 
-               'GDCHiddenFolderColor', 'GDCFileAttributesColors', 
-               'GDCDefaultFileColor', 'GDCFileAttributes', 'GDCNakedFileColor', 
-               'GDCDefaultDisplayFormat'
+VariablesToExport = 'GdcTheme'
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
 AliasesToExport = @()
@@ -115,7 +108,7 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = 'fixed Get-WieldingLsInfo for gallery installs'
+        ReleaseNotes = 'moved customization fields to class'
 
         # Prerelease string of this module
         Prerelease = 'Alpha'
