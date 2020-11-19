@@ -3,10 +3,6 @@ Change Log
 
 ## **Latest**
 
-### 0.0.17-Beta - 2020-11-19
-#### Changes
-- moved to beta
-
 ### 0.0.16-Alpha - 2020-11-19
 #### Changes
 - removed .xxx extension default
