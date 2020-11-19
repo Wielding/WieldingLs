@@ -196,6 +196,12 @@ Import-Module WieldingLs
 ```
 This would set ".ext1", ".ext2" and ".ext3" to a forground color of `"{:F4:}"`
 
+If you want to see what your current extensions styles are you can enter the following on the command line to get a list of the extensions in the style that is assinged to each.
+
+```powershell
+$GdcTheme.ExtensionColors.Keys | Sort-Object $_ |  % {Write-Wansi "$($GdcTheme.ExtensionColors[$_])filename$_{:R:}`n"}
+```
+
 The following will change all files with the `Directory` attribute to be shown with a `Blue` foreground and the default background.
 ```powershell
 Import-Module WieldingLs
