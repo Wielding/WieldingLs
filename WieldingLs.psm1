@@ -484,8 +484,6 @@ function Get-DirectoryContents {
 
 Update-GDCColors
 
-$GdcTheme.ExtensionColors[".xxx"] = "{:F40:}*{:F93:}{:UnderlineOn:}"
-
 Export-ModuleMember -Function Out-Default, 'Get-DirectoryContents'
 Export-ModuleMember -Function Out-Default, 'Update-GDCColors'
 Export-ModuleMember -Function Out-Default, 'Get-AnsiCodes'

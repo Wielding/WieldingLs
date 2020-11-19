@@ -3,6 +3,10 @@ Change Log
 
 ## **Latest**
 
+### 0.0.16-Alpha - 2020-11-19
+#### Changes
+- removed .xxx extension default
+
 ### 0.0.15-Alpha - 2020-11-18
 #### Changes
 - changed DefaultDisplayFormat to string for serializing
