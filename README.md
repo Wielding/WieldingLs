@@ -189,6 +189,13 @@ $GdcTheme.SourceCodeExtensions += ".pl1"
 Update-GDCColors
 ```
 
+If you would like to set many extensions to the same color you could use the following.
+```powershell
+Import-Module WieldingLs
+ (".ext1", ".ext2", ".ext3") | ForEach-Object {$GdcTheme.ExtensionColors[$_] = "{:F4:}"}
+```
+This would set ".ext1", ".ext2" and ".ext3" to a forground color of `"{:F4:}"`
+
 The following will change all files with the `Directory` attribute to be shown with a `Blue` foreground and the default background.
 ```powershell
 Import-Module WieldingLs
