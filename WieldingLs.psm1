@@ -268,7 +268,7 @@ function Get-DirectoryContentsWithOptions {
     }
 
     if ($options.ShowHeader) {
-        $mode = ConvertTo-AnsiString "{:Bold:}{:F15:}{:UnderlineOn:}Mode{:R:}" -PadRight 8
+        $mode = ConvertTo-AnsiString "{:BoldOn:}{:F15:}{:UnderlineOn:}Mode{:R:}" -PadRight 8
         $lastWriteTime = ConvertTo-AnsiString "{:UnderlineOn:}{:F15:}LastWriteTime{:R:}" -PadLeft 19
         $Length = ConvertTo-AnsiString "{:UnderlineOn:}{:F15:}Length{:R:}" -PadLeft 15
         $Name = ConvertTo-AnsiString "{:UnderlineOn:}{:F15:}Name{:R:}" -PadLeft 10
