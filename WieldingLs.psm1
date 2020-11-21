@@ -268,8 +268,11 @@ function Get-DirectoryContentsWithOptions {
     }
 
     if ($options.ShowHeader) {
-        Write-Host ("{0, 5}`t{1, 19}`t{2, 10}`t{3}" -f "Mode", "LastWriteTime", "Length", "Name")
-        Write-Host ("{0, 5}`t{1, 19}`t{2, 10}`t{3}" -f "-----", "-------------------", "----------", "----")
+        $mode = ConvertTo-AnsiString "{:Bold:}{:F15:}{:UnderlineOn:}Mode{:R:}" -PadRight 8
+        $lastWriteTime = ConvertTo-AnsiString "{:UnderlineOn:}{:F15:}LastWriteTime{:R:}" -PadLeft 19
+        $Length = ConvertTo-AnsiString "{:UnderlineOn:}{:F15:}Length{:R:}" -PadLeft 15
+        $Name = ConvertTo-AnsiString "{:UnderlineOn:}{:F15:}Name{:R:}" -PadLeft 10
+        Write-Wansi ("{0}{1}{2}{3}`n" -f $mode.Value, $lastWriteTime.Value, $Length.Value, $Name.Value)
     }
 
     foreach ($file in $files) {
@@ -301,13 +304,13 @@ function Get-DirectoryContentsWithOptions {
 
         # Long Format
         if ($options.Format -eq [DisplayFormat]::Long) {
-            Write-Host "$($file.Mode)`t" -NoNewline
-            Write-Host ("{0, 10} {1, 8}`t" -f $($file.LastWriteTime.ToString("d"), $file.LastWriteTime.ToString("t"))) -NoNewline
+            Write-Wansi "$($file.Mode)`t" -NoNewline
+            Write-Wansi ("{0, 10} {1, 8}`t" -f $($file.LastWriteTime.ToString("d"), $file.LastWriteTime.ToString("t"))) -NoNewline
             if ($isDir) {
-                Write-Host ("{0, 9}`t" -f "-") -NoNewline
+                Write-Wansi ("{0, 9}`t" -f "-") -NoNewline
             }
             else {
-                Write-Host ("{0, 10}`t" -f $(Write-FileLength $file.Length)) -NoNewline
+                Write-Wansi ("{0, 10}`t" -f $(Write-FileLength $file.Length)) -NoNewline
             }
             Write-Wansi ("$($fileStyle)$($file.Name){:R:}`n")
         }
@@ -326,30 +329,24 @@ function Get-DirectoryContentsWithOptions {
         $boundary = 0
         foreach ($i in $fileList) {
             if ($boundary + $longestName -ge $options.Width) {
-                Write-Host
+                Write-Wansi "`n"
                 $boundary = 0
             }
 
             $boundary += $longestName
 
-            $ansiString = ConvertTo-AnsiString "$($i.Style)$($i.File.Name){:R:}"
-            Write-Host $ansiString.Value -NoNewline    
-            if ($longestName - $ansiString.NakedLength -gt 0) {
-                $padding =  " ".PadRight($longestName - $ansiString.NakedLength, " ")
-                Write-Host $padding -NoNewline
-            } 
-
-
+            $ansiString = ConvertTo-AnsiString "$($i.Style)$($i.File.Name){:R:}" -PadRight $longestName
+            Write-Wansi $ansiString.Value
         }     
     }
    
     if ($options.ShowTotal) {
         if ($totalSize -gt 0) {
-            Write-Host ("`t`t`t`t{0, 10} total" -f $(Write-FileLength $totalSize))
+            Write-Wansi ("`t`t`t`t{0, 10} total`n" -f $(Write-FileLength $totalSize))
         }
     }
 
-    Write-Host  
+    Write-Wansi "`n"
 }
 function Get-DirectoryContents {
     <#
