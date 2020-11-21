@@ -243,6 +243,11 @@ function Get-DirectoryContentsWithOptions {
     $fileList = @()
     $attributes = "!System"
     
+
+    if (-not $options.ShowColor) {
+        $Wansi.Enabled = $false
+    }
+    
     if ($options.ShowHidden) {
         $attributes = "!System,Hidden+!System"
     }
@@ -275,6 +280,7 @@ function Get-DirectoryContentsWithOptions {
         Write-Wansi ("{0}{1}{2}{3}`n" -f $mode.Value, $lastWriteTime.Value, $Length.Value, $Name.Value)
     }
 
+
     foreach ($file in $files) {
         ++$index
 
@@ -288,13 +294,7 @@ function Get-DirectoryContentsWithOptions {
             $longestName = $file.Name.Length + 2
         }
 
-
-        if ($options.ShowColor) {
-            $fileStyle = Get-FileColor $file
-        }
-        else {
-            $fileStyle = $defaultColor
-        }
+        $fileStyle = Get-FileColor $file
 
         $isDir = ($file.Attributes -band [System.IO.FileAttributes]::Directory) -eq [System.IO.FileAttributes]::Directory
 
@@ -471,7 +471,11 @@ function Get-DirectoryContents {
         return
     }
 
+    $originalWansiEnabled = $Wansi.Enabled
+
     $returnCode = Get-DirectoryContentsWithOptions $options      
+
+    $Wansi.Enabled = $originalWansiEnabled
 
     if ($returnCode -gt 0) {
         return

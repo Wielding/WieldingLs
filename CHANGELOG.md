@@ -3,6 +3,10 @@ Change Log
 
 ## **Latest**
 
+### 0.1.3-Alpha - 2020-11-21
+#### Changes
+- Modified for new WieldingAnsi code
+
 ### 0.1.2-Alpha - 2020-11-21
 #### Changes
 - fixed bold header wansi tag
