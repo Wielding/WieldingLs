@@ -236,7 +236,6 @@ function Get-DirectoryContentsWithOptions {
         [GDCOptions]$options
     )
 
-    $defaultColor = "{:R:}"
     $longestName = 0
     $totalSize = 0
     $index = 0
