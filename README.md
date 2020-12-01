@@ -212,7 +212,7 @@ You can look at the code in `Get-DirectoryContents.pms1` to see the default file
 Another option for customizing is saving the `$GdcTheme` class contents to a file.  You can save the current state of the theme using the following powershell code.
 
 ```powershell
-  Set-Content -Path ./theme.json (ConvertTo-Json -InputObject $GdcTheme)
+  Set-Content -Path ./theme.json (ConvertTo-Json -InputObject $GdcTheme -Depth 10)
 ```
 
 This will save the current state of your theme including any modifcations you have made using the previous methods to the file `theme.json` in the current directory.

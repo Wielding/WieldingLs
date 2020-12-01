@@ -3,6 +3,10 @@ Change Log
 
 ## **Latest**
 
+### 1.0.0 - 2020-12-1
+#### Changes
+- initial stable version
+
 ### 0.1.3-Alpha - 2020-11-21
 #### Changes
 - Modified for new WieldingAnsi code
