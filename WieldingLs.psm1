@@ -291,6 +291,9 @@ function Get-DirectoryContentsWithOptions {
 
         if ($file.Name.Length + 2 -gt $longestName) {
             $longestName = $file.Name.Length + 2
+            if ($longestName -ge $Host.Ui.RawUI.BufferSize.Width) {
+                $longestName = $Host.Ui.RawUI.BufferSize.Width - 1
+            }
         }
 
         $fileStyle = Get-FileColor $file
@@ -345,7 +348,7 @@ function Get-DirectoryContentsWithOptions {
         }
     }
 
-    Write-Wansi "`n"
+    Write-Wansi "`n`n"
 }
 function Get-DirectoryContents {
     <#

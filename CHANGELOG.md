@@ -3,6 +3,10 @@ Change Log
 
 ## **Latest**
 
+### 1.0.1 - 2021-1-30
+#### Changes
+- added fix for long filenames
+
 ### 1.0.0 - 2020-12-1
 #### Changes
 - initial stable version
