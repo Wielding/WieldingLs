@@ -174,6 +174,16 @@ The following will cause all files with a '.xxx' extension to be shown with an u
 Import-Module WieldingLs
 $GdcTheme.ExtensionColors[".xxx"] = "{:F40:}*{:F93:}{:UnderlineOn:}"
 ```
+
+You can put folder icons in front of directory items if you are using [NerdFonts](https://www.nerdfonts.com) in your terminal by putting the following in your profile.
+```powershell
+$GdcTheme.FileAttributesColors["Directory"] = "{:F220:}$([char]0xf74a) "
+$GdcTheme.FileAttributesColors["ReparsePoint"] = "{:F0:}{:B220:}$([char]0xf756) "
+$GdcTheme.HiddenFolderColor = "{:F178:}$([char]0xf755) "
+```
+Here is an example of the folder icons.
+![output](images/folder_icons.png)
+
 Here is a sample with the ".xxx" styling from above using the alias `ls` set to `Get-DirectoryContents`
 ![output](images/sample1.png)
 
