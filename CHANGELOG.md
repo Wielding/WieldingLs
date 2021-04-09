@@ -3,6 +3,10 @@ Change Log
 
 ## **Latest**
 
+### 1.0.2 - 2021-4-9
+#### Changes
+- increased space between files in short mode
+
 ### 1.0.1 - 2021-1-30
 #### Changes
 - added fix for long filenames
