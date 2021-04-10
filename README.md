@@ -53,6 +53,9 @@ The current command line parameters are:
 * `-HideHeader` -
   Disables displaying the directory list header. The default value is False.
 
+* `-MinColumns` -
+  The minumum number of columns to display in short format before truncating filenames. The default value is 4.  
+
 * `-HideTotal` -
   Disables displaying the file size total. The default value is False.
 

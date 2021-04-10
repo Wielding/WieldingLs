@@ -22,6 +22,7 @@ class GDCOptions {
     [bool]$ShowSystem
     [DisplayFormat]$Format
     [int]$Width
+    [int]$MaxNameLength
 }
 
 class Style {
@@ -31,6 +32,7 @@ class Style {
 class FileItem {
     [object]$File
     [string]$Style
+    [string]$AdjustedName
 }
 
 class GdcTheme {
@@ -54,6 +56,7 @@ class GdcTheme {
     [string]$DefaultFileColor
     $ExtensionColors = @{}
     [string]$DefaultDisplayFormat
+    [string]$TruncationIndicator
 }
 
 
@@ -141,6 +144,7 @@ $GdcTheme.HiddenFileColor = "{:F240:}"
 $GdcTheme.HiddenFolderColor = "{:F136:}"
 $GdcTheme.NakedFileColor = "{:F28:}"
 $GdcTheme.DefaultFileColor = "{:R:}"
+$GdcTheme.TruncationIndicator = "{:F15:}...{:R:}"
 [DisplayFormat]$GdcTheme.DefaultDisplayFormat = [DisplayFormat]::Short
 
 function Get-WieldingLsInfo {
@@ -289,11 +293,20 @@ function Get-DirectoryContentsWithOptions {
             }
         }
 
-        if ($file.Name.Length + 2 -gt $longestName) {
+        if ($file.Name.Length + 3 -gt $longestName) {
             $longestName = $file.Name.Length + 3
             if ($longestName -ge $Host.Ui.RawUI.BufferSize.Width) {
                 $longestName = $Host.Ui.RawUI.BufferSize.Width - 1
             }
+        }
+
+        $adjustedName = $file.Name
+
+        if ($longestName -gt $options.MaxNameLength) {
+            $longestName = $options.MaxNameLength
+            $ti = ConvertTo-AnsiString $GdcTheme.TruncationIndicator
+            $adjustedName = $file.Name.Substring(0, $options.MaxNameLength - ($ti.NakedLength + 1))
+            $adjustedName += $ti.value
         }
 
         $fileStyle = Get-FileColor $file
@@ -322,6 +335,7 @@ function Get-DirectoryContentsWithOptions {
             $t = New-Object -TypeName FileItem
             $t.File = $file
             $t.Style = $fileStyle
+            $t.AdjustedName = $adjustedName
             $fileList += $t
         }
     }
@@ -337,7 +351,7 @@ function Get-DirectoryContentsWithOptions {
 
             $boundary += $longestName
 
-            $ansiString = ConvertTo-AnsiString "$($i.Style)$($i.File.Name){:R:}" -PadRight $longestName
+            $ansiString = ConvertTo-AnsiString "$($i.Style)$($i.AdjustedName) {:R:}" -PadRight $longestName
             Write-Wansi $ansiString.Value
         }     
     }
@@ -366,6 +380,9 @@ function Get-DirectoryContents {
 
  .PARAMETER HideHeader
     Disables displaying the directory list header
+
+ .PARAMETER MinColumns
+    The minumum number of columns to display in short format before truncating filenames
 
  .PARAMETER HideTotal
     Disables displaying the file size total
@@ -405,6 +422,7 @@ function Get-DirectoryContents {
         [switch]$HideHeader,
         [switch]$HideTotal,
         [switch]$NoColor,
+        [int]$MinColumns = 4,
         [Alias("a")]
         [switch]$ShowHidden,
         [Alias("l")]
@@ -412,10 +430,13 @@ function Get-DirectoryContents {
         [Alias("w")]
         [switch]$ShowSystem,
         [switch]$Help
-
     )
 
     $returnCode = 0
+
+    if ($MinColumns -lt 1) {
+        $MinColumns = 1
+    }
 
     $options = New-Object -TypeName GDCOptions
     $options.Path = $Path
@@ -427,6 +448,7 @@ function Get-DirectoryContents {
     $options.ShowSystem = $ShowSystem
     $options.Format = $DisplayFormat
     $options.Width = $host.ui.RawUI.WindowSize.Width
+    $options.MaxNameLength = ($host.ui.RawUI.WindowSize.Width / $MinColumns) - 3
 
     if ($args.Length -gt 0) {
         foreach ($arg in $args) {
