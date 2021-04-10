@@ -307,7 +307,11 @@ function Get-DirectoryContentsWithOptions {
         if ($longestName -gt $options.MaxNameLength) {
             $longestName = $options.MaxNameLength
             $ti = ConvertTo-AnsiString $GdcTheme.TruncationIndicator
-            $adjustedName = $file.Name.Substring(0, $options.MaxNameLength - ($ti.NakedLength + 1 + (ConvertTo-AnsiString $fileStyle).NakedLength))
+            $subLength = $options.MaxNameLength - ($ti.NakedLength + 1 + (ConvertTo-AnsiString $fileStyle).NakedLength)
+            if ($subLength -lt 1) {
+                $subLength = 1
+            }
+            $adjustedName = $file.Name.Substring(0, $subLength)
             $adjustedName += $ti.value
         }
 

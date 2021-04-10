@@ -3,6 +3,10 @@ Change Log
 
 ## **Latest**
 
+### 1.0.5 - 2021-4-9
+#### Changes
+- added check to prevent negative length
+
 ### 1.0.4 - 2021-4-9
 #### Changes
 - fixed adjustedname length calculation
