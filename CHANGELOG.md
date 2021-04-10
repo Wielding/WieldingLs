@@ -3,6 +3,10 @@ Change Log
 
 ## **Latest**
 
+### 1.0.7-Alpha - 2021-4-10
+#### Changes
+- fixed column size calcuation
+
 ### 1.0.6-Alpha - 2021-4-10
 #### Changes
 - added ability to force important

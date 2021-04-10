@@ -136,8 +136,8 @@ $GdcTheme.CompressedFileExtensions = @(
 
 
 $GdcTheme.FileAttributesColors = @{    
-    [System.IO.FileAttributes]::Directory = "{:F11:} "
-    ([System.IO.FileAttributes]::Directory + [System.IO.FileAttributes]::ReparsePoint) = "{:UnderlineOn:}"
+    [System.IO.FileAttributes]::Directory = "{:F11:}"
+    ([System.IO.FileAttributes]::Directory + [System.IO.FileAttributes]::ReparsePoint) = "{:InverseOn:}"
 }
 
 $GdcTheme.HiddenFileColor = "{:F240:}"
@@ -200,26 +200,7 @@ function Write-FileLength {
 
 function Get-FileColor([Object]$file) {
     $fileStyle = $GdcTheme.DefaultFileColor
-    $foundAttribute = $false
     $isDir = ($file.Attributes -band [System.IO.FileAttributes]::Directory) -eq [System.IO.FileAttributes]::Directory
-
-    # foreach ($attribute in $GdcTheme.FileAttributes) {
-    #     if (($file.Attributes -band $attribute) -eq $attribute ) {
-    #         if ($GdcTheme.FileAttributesColors.ContainsKey($attribute)) {
-                
-    #             $style = $GdcTheme.FileAttributesColors[$attribute]
-
-    #             if ($style.Length -gt 0) {
-    #                 if ($style.SubString(0, 1) -eq "!") {
-    #                     return $style.SubString(1, $style.Length - 1)
-    #                 }
-    #             }
-
-    #             $fileStyle += $GdcTheme.FileAttributesColors[$attribute]
-    #             $foundAttribute = $true
-    #         }
-    #     }        
-    # }
 
     foreach ($attribute in $GdcTheme.FileAttributesColors.Keys) {
         if (($file.Attributes -band $attribute) -eq $attribute ) {
@@ -232,7 +213,6 @@ function Get-FileColor([Object]$file) {
             }
 
             $fileStyle += $GdcTheme.FileAttributesColors[$attribute]
-            $foundAttribute = $true
         }        
     }
 
@@ -242,10 +222,6 @@ function Get-FileColor([Object]$file) {
         }
         return $fileStyle + $GdcTheme.HiddenFolderColor
     }
-
-    # if ($foundAttribute) {
-    #     return $fileStyle
-    # }
 
     if (!$isDir -and $file.Extension.Length -lt 1) {
         return $fileStyle + $GdcTheme.NakedFileColor
@@ -366,7 +342,7 @@ function Get-DirectoryContentsWithOptions {
             $t = New-Object -TypeName FileItem
             $t.File = $file
             $t.Style = $fileStyle
-            $t.AdjustedName = $adjustedName
+            $t.AdjustedName = $adjustedName + " "
             $fileList += $t
         }
     }
@@ -465,9 +441,6 @@ function Get-DirectoryContents {
 
     $returnCode = 0
 
-    if ($MinColumns -lt 1) {
-        $MinColumns = 1
-    }
 
     $options = New-Object -TypeName GDCOptions
     $options.Path = $Path
@@ -479,8 +452,13 @@ function Get-DirectoryContents {
     $options.ShowSystem = $ShowSystem
     $options.Format = $DisplayFormat
     $options.Width = $host.ui.RawUI.WindowSize.Width
-    $options.MaxNameLength = ($host.ui.RawUI.WindowSize.Width / $MinColumns) - 3
 
+    if ($MinColumns -lt 1) {
+        $options.MaxNameLength = 256
+    } else {
+        $options.MaxNameLength = ($host.ui.RawUI.WindowSize.Width / $MinColumns)
+    }
+    
     if ($args.Length -gt 0) {
         foreach ($arg in $args) {
             if ($arg.StartsWith("-")) {
