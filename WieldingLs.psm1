@@ -48,6 +48,8 @@ class GdcTheme {
     $ExecutableFileExtensions = @()
     [string]$CompressedFileColor
     $CompressedFileExtensions = @()
+    [string]$ImageFileColor
+    $ImageFileExtensions = @()
     $FileAttributes = @()
     $FileAttributesColors = @{}
     $FileAttributeCombinationColors = @{}
@@ -134,10 +136,24 @@ $GdcTheme.CompressedFileExtensions = @(
     ".rpm"
 )
 
+$GdcTheme.ImageFileColor = "{:F67:}"
+$GdcTheme.ImageFileExtensions = @(
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".png",
+    ".nef",
+    ".dng",
+    ".tif",
+    ".psd",
+    ".ai"
+)
 
 $GdcTheme.FileAttributesColors = @{    
-    [System.IO.FileAttributes]::Directory = "{:F11:}"
-    ([System.IO.FileAttributes]::Directory + [System.IO.FileAttributes]::ReparsePoint) = "{:InverseOn:}"
+    [System.IO.FileAttributes]::Directory = "{:F172:}+{:F220:} "
+    ([System.IO.FileAttributes]::Directory + [System.IO.FileAttributes]::ReparsePoint) = "!{:F172:}@{:F220:} "
+    ([System.IO.FileAttributes]::System + [System.IO.FileAttributes]::Hidden + [System.IO.FileAttributes]::Directory) = "!{:F1:}!{:F220:} "
+    [System.IO.FileAttributes]::Hidden = "!{:F1:}`$ "
 }
 
 $GdcTheme.HiddenFileColor = "{:F240:}"
@@ -176,6 +192,10 @@ function Update-GDCColors {
 
     foreach ($extension in $GdcTheme.DocumentFileExtensions) {
         $GdcTheme.ExtensionColors[$extension] = $GdcTheme.DocumentFileColor
+    }                
+
+    foreach ($extension in $GdcTheme.ImageFileExtensions) {
+        $GdcTheme.ExtensionColors[$extension] = $GdcTheme.ImageFileColor
     }                
 }
 
@@ -285,7 +305,6 @@ function Get-DirectoryContentsWithOptions {
         $Name = ConvertTo-AnsiString "{:UnderlineOn:}{:F15:}Name{:R:}" -PadLeft 10
         Write-Wansi ("{0}{1}{2}{3}`n" -f $mode.Value, $lastWriteTime.Value, $Length.Value, $Name.Value)
     }
-
 
     foreach ($file in $files) {
         ++$index
@@ -429,7 +448,7 @@ function Get-DirectoryContents {
         [switch]$HideHeader,
         [switch]$HideTotal,
         [switch]$NoColor,
-        [int]$MinColumns = 4,
+        [int]$MinColumns = 2,
         [Alias("a")]
         [switch]$ShowHidden,
         [Alias("l")]
@@ -456,9 +475,9 @@ function Get-DirectoryContents {
     if ($MinColumns -lt 1) {
         $options.MaxNameLength = 256
     } else {
-        $options.MaxNameLength = ($host.ui.RawUI.WindowSize.Width / $MinColumns)
+        $options.MaxNameLength = ($host.ui.RawUI.WindowSize.Width / $MinColumns) - 3
     }
-    
+
     if ($args.Length -gt 0) {
         foreach ($arg in $args) {
             if ($arg.StartsWith("-")) {

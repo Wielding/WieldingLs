@@ -107,7 +107,9 @@ You can also set Bold, Inverse and Underline styles using these values.
 
 To reset all to the default for the console use the value `"{:R:}"`
 
-Here are the group colors, styles and defaults that can be overridden with the current defaults
+Here are the group colors, styles and defaults that can be overridden with the current defaults.
+A '!' character in the first position of a style means that it will override all other styles.
+Otherwise attribute styles will be additive.
 ```powershell
 $GdcTheme.SourceCodeColor = "{:F82:}"
 $GdcTheme.DataFileColor = "{:F14:}"
@@ -121,6 +123,10 @@ $GdcTheme.NakedFileColor = "{:F28:}"
 $GdcTheme.DefaultFileColor = "{:R:}"
 $GdcTheme.FileAttributesColors["Directory"] = "{:F11:}"
 $GdcTheme.FileAttributesColors["ReparsePoint"] = "{:F0:}{:B11:}"
+$GdcTheme.FileAttributesColors[[System.IO.FileAttributes]::Directory = "{:F172:}+{:F220:} "
+$GdcTheme.FileAttributesColors[([System.IO.FileAttributes]::Directory + [System.IO.FileAttributes]::ReparsePoint)] = "!{:F172:}@{:F220:} "
+$GdcTheme.FileAttributesColors[([System.IO.FileAttributes]::System + [System.IO.FileAttributes]::Hidden + [System.IO.FileAttributes]::Directory)] = "!{:F1:}!{:F220:} "
+$GdcTheme.FileAttributesColors[[System.IO.FileAttributes]::Hidden] = "!{:F1:}`$ "
 $GdcTheme.DefaultDisplayFormat = "Short"
 ```
 You can add or override specific extensions with the variable:

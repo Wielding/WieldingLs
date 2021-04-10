@@ -3,6 +3,13 @@ Change Log
 
 ## **Latest**
 
+### 1.0.8 - 2021-4-10
+#### Changes
+- added image extensions
+- minor fixes
+- added some basic theme characters for folders and system files
+- added a sample nerdfont theme
+
 ### 1.0.7-Alpha - 2021-4-10
 #### Changes
 - fixed column size calcuation
@@ -10,7 +17,7 @@ Change Log
 ### 1.0.6-Alpha - 2021-4-10
 #### Changes
 - added ability to force important
-added abilitiy for multiple attributes
+- added abilitiy for multiple attributes
 
 ### 1.0.5 - 2021-4-9
 #### Changes
