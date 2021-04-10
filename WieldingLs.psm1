@@ -49,7 +49,8 @@ class GdcTheme {
     [string]$CompressedFileColor
     $CompressedFileExtensions = @()
     $FileAttributes = @()
-    $FileAttributesColors =  @{}
+    $FileAttributesColors = @{}
+    $FileAttributeCombinationColors = @{}
     [string]$HiddenFileColor
     [string]$HiddenFolderColor
     [string]$NakedFileColor
@@ -80,7 +81,7 @@ $GdcTheme.SourceCodeExtensions = @(
     ".psm1", ".ps1xml", ".psc1", ".psd1", ".pssc", ".cdxml",
     ".py", ".pyx", ".pyc", ".pyd", ".pyo", ".pyw", ".pyz",
     ".r", ".RData", ".rds", ".rda",
-    ".rb"
+    ".rb",
     ".rs", ".rlib",
     ".scala", ".sc",
     ".scm", ".ss",
@@ -133,11 +134,10 @@ $GdcTheme.CompressedFileExtensions = @(
     ".rpm"
 )
 
-$GdcTheme.FileAttributes = [System.IO.FileAttributes].GetEnumNames()
 
-$GdcTheme.FileAttributesColors = @{
-    Directory    = "{:F11:}"
-    ReparsePoint = "{:F0:}{:B11:}"
+$GdcTheme.FileAttributesColors = @{    
+    [System.IO.FileAttributes]::Directory = "{:F11:} "
+    ([System.IO.FileAttributes]::Directory + [System.IO.FileAttributes]::ReparsePoint) = "{:UnderlineOn:}"
 }
 
 $GdcTheme.HiddenFileColor = "{:F240:}"
@@ -203,33 +203,60 @@ function Get-FileColor([Object]$file) {
     $foundAttribute = $false
     $isDir = ($file.Attributes -band [System.IO.FileAttributes]::Directory) -eq [System.IO.FileAttributes]::Directory
 
-    foreach ($attribute in $GdcTheme.FileAttributes) {
+    # foreach ($attribute in $GdcTheme.FileAttributes) {
+    #     if (($file.Attributes -band $attribute) -eq $attribute ) {
+    #         if ($GdcTheme.FileAttributesColors.ContainsKey($attribute)) {
+                
+    #             $style = $GdcTheme.FileAttributesColors[$attribute]
+
+    #             if ($style.Length -gt 0) {
+    #                 if ($style.SubString(0, 1) -eq "!") {
+    #                     return $style.SubString(1, $style.Length - 1)
+    #                 }
+    #             }
+
+    #             $fileStyle += $GdcTheme.FileAttributesColors[$attribute]
+    #             $foundAttribute = $true
+    #         }
+    #     }        
+    # }
+
+    foreach ($attribute in $GdcTheme.FileAttributesColors.Keys) {
         if (($file.Attributes -band $attribute) -eq $attribute ) {
-            if ($GdcTheme.FileAttributesColors.ContainsKey($attribute)) {
-                $fileStyle = $GdcTheme.FileAttributesColors[$attribute]
-                $foundAttribute = $true
+            $style = $GdcTheme.FileAttributesColors[$attribute]
+
+            if ($style.Length -gt 0) {
+                if ($style.SubString(0, 1) -eq "!") {
+                    return $style.SubString(1, $style.Length - 1)
+                }
             }
+
+            $fileStyle += $GdcTheme.FileAttributesColors[$attribute]
+            $foundAttribute = $true
         }        
     }
 
     if ($isDir -and $file.Name.StartsWith(".")) {
-        $fileStyle = $GdcTheme.HiddenFolderColor
+        if ($GdcTheme.HiddenFolderColor.SubString(0, 1) -eq "!") {
+            return $GdcTheme.HiddenFolderColor.SubString(1, $GdcTheme.HiddenFolderColor.Length - 1)
+        }
+        return $fileStyle + $GdcTheme.HiddenFolderColor
     }
 
-    if ($foundAttribute) {
-        return $fileStyle
-    }
+    # if ($foundAttribute) {
+    #     return $fileStyle
+    # }
 
     if (!$isDir -and $file.Extension.Length -lt 1) {
-        return $GdcTheme.NakedFileColor
+        return $fileStyle + $GdcTheme.NakedFileColor
     }
 
     if ($file.Name.StartsWith(".")) {
-        return $GdcTheme.HiddenFileColor
+        return $fileStyle + $GdcTheme.HiddenFileColor
     }
 
     if ($GdcTheme.ExtensionColors.ContainsKey($file.Extension)) {
-        return $GdcTheme.ExtensionColors[$file.Extension]
+        return $fileStyle + $GdcTheme.ExtensionColors[$file.Extension]
     }
 
     return $fileStyle
@@ -315,8 +342,6 @@ function Get-DirectoryContentsWithOptions {
             $adjustedName += $ti.value
         }
 
-
-
         $isDir = ($file.Attributes -band [System.IO.FileAttributes]::Directory) -eq [System.IO.FileAttributes]::Directory
 
         if (!$isDir) {
@@ -357,7 +382,7 @@ function Get-DirectoryContentsWithOptions {
 
             $boundary += $longestName
 
-            $ansiString = ConvertTo-AnsiString "$($i.Style)$($i.AdjustedName) {:R:}" -PadRight $longestName
+            $ansiString = ConvertTo-AnsiString "$($i.Style)$($i.AdjustedName){:R:}" -PadRight $longestName
             Write-Wansi $ansiString.Value
         }     
     }
@@ -424,7 +449,7 @@ function Get-DirectoryContents {
         [ValidateSet("Name", "Attributes", "LastWriteTime", "Length")]
         [SortProperty]$SortProperty,
         [ValidateSet("Long", "Short")]
-        [DisplayFormat]$DisplayFormat =$GdcTheme.DefaultDisplayFormat,
+        [DisplayFormat]$DisplayFormat = $GdcTheme.DefaultDisplayFormat,
         [switch]$HideHeader,
         [switch]$HideTotal,
         [switch]$NoColor,
@@ -519,4 +544,5 @@ Export-ModuleMember -Function Out-Default, 'Get-DirectoryContents'
 Export-ModuleMember -Function Out-Default, 'Update-GDCColors'
 Export-ModuleMember -Function Out-Default, 'Get-AnsiCodes'
 Export-ModuleMember -Function Out-Default, 'Get-WieldingLsInfo'
+Export-ModuleMember -Function Out-Default, 'Get-FileColor'
 Export-ModuleMember -Variable 'GdcTheme'
