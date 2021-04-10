@@ -12,7 +12,7 @@
 RootModule = 'WieldingLs.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.3'
+ModuleVersion = '1.0.4'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -108,7 +108,7 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = 'added MinColumns option'
+        ReleaseNotes = 'fixed adjustedname length calculation'
 
         # Prerelease string of this module
         # Prerelease = ''

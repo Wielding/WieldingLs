@@ -302,14 +302,16 @@ function Get-DirectoryContentsWithOptions {
 
         $adjustedName = $file.Name
 
+        $fileStyle = Get-FileColor $file
+
         if ($longestName -gt $options.MaxNameLength) {
             $longestName = $options.MaxNameLength
             $ti = ConvertTo-AnsiString $GdcTheme.TruncationIndicator
-            $adjustedName = $file.Name.Substring(0, $options.MaxNameLength - ($ti.NakedLength + 1))
+            $adjustedName = $file.Name.Substring(0, $options.MaxNameLength - ($ti.NakedLength + 1 + (ConvertTo-AnsiString $fileStyle).NakedLength))
             $adjustedName += $ti.value
         }
 
-        $fileStyle = Get-FileColor $file
+
 
         $isDir = ($file.Attributes -band [System.IO.FileAttributes]::Directory) -eq [System.IO.FileAttributes]::Directory
 
