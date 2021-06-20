@@ -3,6 +3,10 @@ Change Log
 
 ## **Latest**
 
+### 1.0.10 - 2021-6-20
+#### Changes
+- removed extra newline
+
 ### 1.0.9 - 2021-6-20
 #### Changes
 - converted to new WieldingAnsi with Write-Output

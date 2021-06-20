@@ -368,22 +368,6 @@ function Get-DirectoryContentsWithOptions {
         }
     }
 
-    # Display the short format
-    # if ($options.Format -eq [DisplayFormat]::Short) {
-    #     $boundary = 0
-    #     foreach ($i in $fileList) {
-    #         if ($boundary + $longestName -ge $options.Width) {
-    #             Write-Wansi "`n"
-    #             $boundary = 0
-    #         }
-
-    #         $boundary += $longestName
-
-    #         $ansiString = ConvertTo-AnsiString "$($i.Style)$($i.AdjustedName){:R:}" -PadRight $longestName
-    #         Write-Wansi $ansiString.Value
-    #     }     
-    # }
-
     if ($options.Format -eq [DisplayFormat]::Short) {
         $boundary = 0
         foreach ($i in $fileList) {
@@ -401,11 +385,11 @@ function Get-DirectoryContentsWithOptions {
    
     if ($options.ShowTotal) {
         if ($totalSize -gt 0) {
-            $output += (ConvertTo-AnsiString  ("`t`t`t`t{0, 10} total`n" -f $(Write-FileLength $totalSize))).Value
+            $output += (ConvertTo-AnsiString  ("`t`t`t`t{0, 10} total" -f $(Write-FileLength $totalSize))).Value
         }
     }
 
-    Write-Output "$output`n`n"
+    Write-Output "$output`n"
 }
 function Get-DirectoryContents {
     <#
