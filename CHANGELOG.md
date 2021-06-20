@@ -3,6 +3,10 @@ Change Log
 
 ## **Latest**
 
+### 1.0.9 - 2021-6-20
+#### Changes
+- converted to new WieldingAnsi with Write-Output
+
 ### 1.0.8 - 2021-4-10
 #### Changes
 - added image extensions

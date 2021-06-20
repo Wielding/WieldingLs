@@ -268,6 +268,7 @@ function Get-DirectoryContentsWithOptions {
     $index = 0
     $fileList = @()
     $attributes = "!System"
+    $output = ""
     
 
     if (-not $options.ShowColor) {
@@ -298,12 +299,14 @@ function Get-DirectoryContentsWithOptions {
         return 0
     }
 
+
+
     if ($options.ShowHeader) {
         $mode = ConvertTo-AnsiString "{:BoldOn:}{:F15:}{:UnderlineOn:}Mode{:R:}" -PadRight 8
         $lastWriteTime = ConvertTo-AnsiString "{:UnderlineOn:}{:F15:}LastWriteTime{:R:}" -PadLeft 19
         $Length = ConvertTo-AnsiString "{:UnderlineOn:}{:F15:}Length{:R:}" -PadLeft 15
         $Name = ConvertTo-AnsiString "{:UnderlineOn:}{:F15:}Name{:R:}" -PadLeft 10
-        Write-Wansi ("{0}{1}{2}{3}`n" -f $mode.Value, $lastWriteTime.Value, $Length.Value, $Name.Value)
+        $output += (ConvertTo-AnsiString ("{0}{1}{2}{3}`n" -f $mode.Value, $lastWriteTime.Value, $Length.Value, $Name.Value)).Value
     }
 
     foreach ($file in $files) {
@@ -343,17 +346,16 @@ function Get-DirectoryContentsWithOptions {
             $totalSize += $file.Length
         }
 
-        # Long Format
         if ($options.Format -eq [DisplayFormat]::Long) {
-            Write-Wansi "$($file.Mode)`t" -NoNewline
-            Write-Wansi ("{0, 10} {1, 8}`t" -f $($file.LastWriteTime.ToString("d"), $file.LastWriteTime.ToString("t"))) -NoNewline
+            $output += (ConvertTo-AnsiString "$($file.Mode)`t").Value
+            $output += (ConvertTo-AnsiString ("{0, 10} {1, 8}`t" -f $($file.LastWriteTime.ToString("d"), $file.LastWriteTime.ToString("t")))).Value
             if ($isDir) {
-                Write-Wansi ("{0, 9}`t" -f "-") -NoNewline
+                $output += ("{0, 9}`t" -f "-") 
             }
             else {
-                Write-Wansi ("{0, 10}`t" -f $(Write-FileLength $file.Length)) -NoNewline
+                $output += (ConvertTo-AnsiString ("{0, 10}`t" -f $(Write-FileLength $file.Length))).Value
             }
-            Write-Wansi ("$($fileStyle)$($file.Name){:R:}`n")
+            $output += (ConvertTo-AnsiString ("$($fileStyle)$($file.Name){:R:}`n")).Value
         }
 
         # Build Short Format Array for display after the loop
@@ -367,28 +369,43 @@ function Get-DirectoryContentsWithOptions {
     }
 
     # Display the short format
+    # if ($options.Format -eq [DisplayFormat]::Short) {
+    #     $boundary = 0
+    #     foreach ($i in $fileList) {
+    #         if ($boundary + $longestName -ge $options.Width) {
+    #             Write-Wansi "`n"
+    #             $boundary = 0
+    #         }
+
+    #         $boundary += $longestName
+
+    #         $ansiString = ConvertTo-AnsiString "$($i.Style)$($i.AdjustedName){:R:}" -PadRight $longestName
+    #         Write-Wansi $ansiString.Value
+    #     }     
+    # }
+
     if ($options.Format -eq [DisplayFormat]::Short) {
         $boundary = 0
         foreach ($i in $fileList) {
             if ($boundary + $longestName -ge $options.Width) {
-                Write-Wansi "`n"
+                $output += "`n"
                 $boundary = 0
             }
 
             $boundary += $longestName
 
             $ansiString = ConvertTo-AnsiString "$($i.Style)$($i.AdjustedName){:R:}" -PadRight $longestName
-            Write-Wansi $ansiString.Value
+            $output += $ansiString.Value
         }     
-    }
+    }    
    
     if ($options.ShowTotal) {
         if ($totalSize -gt 0) {
-            Write-Wansi ("`t`t`t`t{0, 10} total`n" -f $(Write-FileLength $totalSize))
+            $output += (ConvertTo-AnsiString  ("`t`t`t`t{0, 10} total`n" -f $(Write-FileLength $totalSize))).Value
         }
     }
 
-    Write-Wansi "`n`n"
+    Write-Output "$output`n`n"
 }
 function Get-DirectoryContents {
     <#
@@ -525,7 +542,7 @@ function Get-DirectoryContents {
 
     $originalWansiEnabled = $Wansi.Enabled
 
-    $returnCode = Get-DirectoryContentsWithOptions $options      
+    Get-DirectoryContentsWithOptions $options      
 
     $Wansi.Enabled = $originalWansiEnabled
 
