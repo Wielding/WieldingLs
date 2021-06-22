@@ -3,6 +3,10 @@ Change Log
 
 ## **Latest**
 
+### 1.0.11 - 2021-6-22
+#### Changes
+- added setting for LastWriteTime
+
 ### 1.0.10 - 2021-6-20
 #### Changes
 - removed extra newline

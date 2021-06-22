@@ -60,6 +60,7 @@ class GdcTheme {
     $ExtensionColors = @{}
     [string]$DefaultDisplayFormat
     [string]$TruncationIndicator
+    [string]$LastWriteTime
 }
 
 
@@ -161,6 +162,7 @@ $GdcTheme.HiddenFolderColor = "{:F136:}"
 $GdcTheme.NakedFileColor = "{:F28:}"
 $GdcTheme.DefaultFileColor = "{:R:}"
 $GdcTheme.TruncationIndicator = "{:F15:}...{:R:}"
+$GdcTheme.LastWriteTime = "{:F6:}"
 [DisplayFormat]$GdcTheme.DefaultDisplayFormat = [DisplayFormat]::Short
 
 function Get-WieldingLsInfo {
@@ -348,14 +350,19 @@ function Get-DirectoryContentsWithOptions {
 
         if ($options.Format -eq [DisplayFormat]::Long) {
             $output += (ConvertTo-AnsiString "$($file.Mode)`t").Value
+            $output += (ConvertTo-AnsiString $GdcTheme.LastWriteTime).Value
             $output += (ConvertTo-AnsiString ("{0, 10} {1, 8}`t" -f $($file.LastWriteTime.ToString("d"), $file.LastWriteTime.ToString("t")))).Value
+            $output += (ConvertTo-AnsiString "{:R:}").Value
             if ($isDir) {
                 $output += ("{0, 9}`t" -f "-") 
             }
             else {
                 $output += (ConvertTo-AnsiString ("{0, 10}`t" -f $(Write-FileLength $file.Length))).Value
             }
+            
             $output += (ConvertTo-AnsiString ("$($fileStyle)$($file.Name){:R:}`n")).Value
+
+            continue
         }
 
         # Build Short Format Array for display after the loop
